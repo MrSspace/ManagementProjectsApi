@@ -17,7 +17,6 @@ public class Board {
 
     @Id
     private ObjectId id;
-    private String publicId;
     private String name;
     @DocumentReference
     private User boardOwner;
