@@ -1,35 +1,39 @@
 package com.management.projects.domain;
 
 import com.management.projects.role.Permission;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
 public class WorkAssignmentKey {
-    private String boardId;
-    private String projectId;
-    private String taskId;
-    private String activityId;
+    @NotNull
+    private ObjectId boardId;
+    private ObjectId projectId;
+    private ObjectId taskId;
+    private ObjectId activityId;
+    @NotNull
     private Permission permission;
 
-    public WorkAssignmentKey(String boardId, Permission permission) {
+    public WorkAssignmentKey(ObjectId boardId, Permission permission) {
         this.boardId = boardId;
         this.permission = permission;
     }
 
-    public WorkAssignmentKey(String boardId, String projectId, Permission permission) {
+    public WorkAssignmentKey(ObjectId boardId, ObjectId projectId, Permission permission) {
         this.boardId = boardId;
         this.projectId = projectId;
         this.permission = permission;
     }
 
-    public WorkAssignmentKey(String boardId, String projectId, String taskId, Permission permission) {
+    public WorkAssignmentKey(ObjectId boardId, ObjectId projectId, ObjectId taskId, Permission permission) {
         this.boardId = boardId;
         this.projectId = projectId;
         this.taskId = taskId;
         this.permission = permission;
     }
 
-    public WorkAssignmentKey(String boardId,String projectId,String taskId,String activityId,Permission permission) {
+    public WorkAssignmentKey(ObjectId boardId,ObjectId projectId,ObjectId taskId,ObjectId activityId,Permission permission) {
         this.boardId = boardId;
         this.projectId = projectId;
         this.taskId = taskId;
