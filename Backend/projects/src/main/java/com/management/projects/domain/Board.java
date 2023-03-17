@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Board {
 
+    private String id;
     private String name;
     private User boardOwner;
     private List<User> collaborators;

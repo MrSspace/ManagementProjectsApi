@@ -1,8 +1,6 @@
 package com.management.projects.user;
 
-import com.management.projects.domain.Board;
-import com.management.projects.domain.Project;
-import com.management.projects.domain.Task;
+import com.management.projects.domain.WorkAssignmentKey;
 import com.management.projects.role.Role;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -22,13 +20,12 @@ import java.util.List;
 @Entity
 public class User implements UserDetails {
 
+    private String id;
     private String username;
     private String email;
     private String password;
     private List<Role> role;
-    private List<Board> boards;
-    private List<Project> projects;
-    private List<Task> tasks;
+    private List<WorkAssignmentKey> workAssignmentKeys;
 
 
     @Override
