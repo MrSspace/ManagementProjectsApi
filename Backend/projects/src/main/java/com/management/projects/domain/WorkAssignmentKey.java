@@ -8,24 +8,33 @@ public class WorkAssignmentKey {
     private String boardId;
     private String projectId;
     private String taskId;
-    private Permission role;
+    private String activityId;
+    private Permission permission;
 
-    public WorkAssignmentKey(String boardId, Permission role) {
+    public WorkAssignmentKey(String boardId, Permission permission) {
         this.boardId = boardId;
-        this.role = role;
+        this.permission = permission;
     }
 
-    public WorkAssignmentKey(String boardId, String projectId, Permission role) {
+    public WorkAssignmentKey(String boardId, String projectId, Permission permission) {
         this.boardId = boardId;
         this.projectId = projectId;
-        this.role = role;
+        this.permission = permission;
     }
 
-    public WorkAssignmentKey(String boardId, String projectId, String taskId, Permission role) {
+    public WorkAssignmentKey(String boardId, String projectId, String taskId, Permission permission) {
         this.boardId = boardId;
         this.projectId = projectId;
         this.taskId = taskId;
-        this.role = role;
+        this.permission = permission;
+    }
+
+    public WorkAssignmentKey(String boardId,String projectId,String taskId,String activityId,Permission permission) {
+        this.boardId = boardId;
+        this.projectId = projectId;
+        this.taskId = taskId;
+        this.activityId = activityId;
+        this.permission = permission;
     }
 
 }
