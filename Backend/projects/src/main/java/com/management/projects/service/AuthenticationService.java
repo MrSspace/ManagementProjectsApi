@@ -24,6 +24,7 @@ public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authManager;
+    private final JwtService jwtService;
 
     public AuthResponse register(RegisterRequest request){
         emailValidation(request.getEmail());
@@ -53,8 +54,8 @@ public class AuthenticationService {
     }
 
     private AuthResponse assignToken(User user){
-
-        return new AuthResponse("hi");
+        String jwtToken = jwtService.generateJwtToken(user);
+        return AuthResponse.builder().jwtToken(jwtToken).build();
     }
 
 }

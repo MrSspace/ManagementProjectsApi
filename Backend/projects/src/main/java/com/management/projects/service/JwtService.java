@@ -20,7 +20,6 @@ public class JwtService {
     private static final int MILLISECONDS_PER_MINUTE = 1000;
     private static final int MINUTES_PER_HOUR = 60;
     private static final int HOURS_PER_DAY = 1000;
-
     private static final int TOKEN_LIFE_TIME = MILLISECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY;
     private static final String SECRET_KEY = "${env.SECRET_KEY}";
 
