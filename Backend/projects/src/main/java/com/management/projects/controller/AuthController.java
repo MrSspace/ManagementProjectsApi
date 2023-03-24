@@ -16,11 +16,6 @@ public class AuthController {
 
     private final AuthenticationService service;
 
-    @GetMapping
-    public ResponseEntity<String> helloWorld(){
-        return ResponseEntity.ok("Hello, Api V1 from auth");
-    }
-
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest user){
         return new ResponseEntity<>(service.register(user), HttpStatus.CREATED);

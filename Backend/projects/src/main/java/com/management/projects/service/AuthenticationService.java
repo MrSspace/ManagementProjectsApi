@@ -43,7 +43,6 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         User user = repository.findByEmail(request.getEmail());
-        System.out.println(user);
         return assignToken(user);
     }
 
