@@ -1,19 +1,15 @@
 package com.management.projects.service;
 
-import com.management.projects.dto.AuthRequest;
-import com.management.projects.dto.AuthResponse;
-import com.management.projects.dto.RegisterRequest;
+import com.management.projects.dto.request.AuthRequest;
+import com.management.projects.dto.response.AuthResponse;
+import com.management.projects.dto.request.RegisterRequest;
 import com.management.projects.exception.InvalidEmailException;
-import com.management.projects.repository.UserRepository;
 import com.management.projects.role.Role;
 import com.management.projects.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 import static com.management.projects.util.RegexValidator.isEmail;
 
@@ -21,30 +17,22 @@ import static com.management.projects.util.RegexValidator.isEmail;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
+    private final UserService userService;
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
 
     public AuthResponse register(RegisterRequest request){
         emailValidation(request.getEmail());
-        User user = new User(
-                request.getUsername(),
-                request.getEmail(),
-                encoder.encode(request.getPassword())
-        );
-        user.setRoles(Collections.singletonList(Role.USER));
-        repository.insert(user);
-        return assignToken(user);
+        userService.createUser(request, Role.USER);
+        return assignToken( loadUser(request.getEmail()) );
     }
 
     public AuthResponse authentication(AuthRequest request){
         emailValidation(request.getEmail());
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        authManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.getEmail(), request.getPassword())
         );
-        User user = repository.findByEmail(request.getEmail());
-        return assignToken(user);
+        return assignToken( loadUser(request.getEmail()) );
     }
 
     private void emailValidation(String email){
@@ -56,6 +44,10 @@ public class AuthenticationService {
     private AuthResponse assignToken(User user){
         String jwtToken = jwtService.generateJwtToken(user);
         return AuthResponse.builder().jwtToken(jwtToken).build();
+    }
+
+    private User loadUser(String email){
+        return userService.getUserByEmail(email);
     }
 
 }

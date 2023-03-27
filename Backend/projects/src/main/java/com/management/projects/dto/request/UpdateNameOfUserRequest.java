@@ -1,4 +1,4 @@
-package com.management.projects.dto;
+package com.management.projects.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest {
+public class UpdateNameOfUserRequest {
 
+    private String name;
     private String email;
-    private String password;
 
 }

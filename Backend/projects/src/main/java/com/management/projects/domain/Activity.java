@@ -7,9 +7,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class TaskActivity {
+public class Activity {
+
     @Id
     private ObjectId id;
     private String name;
@@ -17,6 +19,9 @@ public class TaskActivity {
     private Date startDate;
     private Date endDate;
     @DocumentReference
-    private User activityManager;
+    private User taskManager;
+    @DocumentReference
+    private List<User> collaborators;
+    private List<Task> tasks;
 
 }

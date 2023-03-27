@@ -1,6 +1,6 @@
 package com.management.projects.exception;
 
-import com.management.projects.dto.ExceptionResponse;
+import com.management.projects.dto.response.ExceptionResponse;
 import com.mongodb.MongoWriteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InvalidEmailException.class)
     public ResponseEntity<ExceptionResponse> invalidEmailExceptionManager(InvalidEmailException ex){
+        return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ExceptionResponse> invalidPasswordExceptionManager(InvalidPasswordException ex){
         return new ResponseEntity<>(new ExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

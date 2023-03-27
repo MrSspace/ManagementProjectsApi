@@ -23,7 +23,7 @@ public class User implements UserDetails {
 
     @Id
     private ObjectId id;
-    private String username;
+    private String name;
     @Indexed(unique = true)
     private String email;
     private String password;
@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private List<WorkAssignmentKey> workAssignmentKeys;
 
     public User(String username, String email, String password) {
-        this.username = username;
+        this.name = username;
         this.email = email;
         this.password = password;
     }
@@ -50,7 +50,6 @@ public class User implements UserDetails {
         return this.password;
     }
 
-    @Override
     public String getUsername() {
         return this.email;
     }

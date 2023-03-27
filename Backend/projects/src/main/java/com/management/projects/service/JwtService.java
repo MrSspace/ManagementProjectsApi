@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ public class JwtService {
     private static final int MINUTES_PER_HOUR = 60;
     private static final int HOURS_PER_DAY = 1000;
     private static final int TOKEN_LIFE_TIME = MILLISECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY;
-    private static final String SECRET_KEY = "${env.SECRET_KEY}";
+    @Value("${env.SECRET_KEY}")
+    private String SECRET_KEY;
 
     public String generateJwtToken(UserDetails userDetails){
         return buildJwtToken(new HashMap<>(), userDetails);

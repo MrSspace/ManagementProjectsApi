@@ -22,6 +22,6 @@ public class Project {
     private User projectManager;
     @DocumentReference
     private List<User> collaborators;
-    private List<Task> tasks;
+    private List<Activity> tasks;
 
 }

@@ -1,8 +1,8 @@
 package com.management.projects.controller;
 
-import com.management.projects.dto.AuthRequest;
-import com.management.projects.dto.AuthResponse;
-import com.management.projects.dto.RegisterRequest;
+import com.management.projects.dto.request.AuthRequest;
+import com.management.projects.dto.response.AuthResponse;
+import com.management.projects.dto.request.RegisterRequest;
 import com.management.projects.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

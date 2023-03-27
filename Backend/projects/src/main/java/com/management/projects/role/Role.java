@@ -8,6 +8,7 @@ public enum Role {
     private Role(String name){
         this.name = name;
     }
+
     public String getName(){
         return name;
     }
