@@ -3,16 +3,14 @@ package com.management.projects.service;
 import com.management.projects.dto.request.AuthRequest;
 import com.management.projects.dto.request.RegisterRequest;
 import com.management.projects.dto.request.UpdateNameOfUserRequest;
-import com.management.projects.dto.response.ActivityResponse;
-import com.management.projects.dto.response.BoardResponse;
-import com.management.projects.dto.response.ProjectResponse;
-import com.management.projects.dto.response.TaskResponse;
+import com.management.projects.dto.response.*;
 import com.management.projects.exception.InvalidPasswordException;
 import com.management.projects.repository.UserRepository;
 import com.management.projects.role.Role;
 import com.management.projects.user.User;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +33,11 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void updateNameOfUser(UpdateNameOfUserRequest request){
+    public UserResponse updateNameOfUser(UpdateNameOfUserRequest request){
         User user = userRepository.findByEmail(request.getEmail());
         user.setName(request.getName());
         userRepository.save(user);
+        return new UserResponse(user.getName(), user.getEmail());
     }
 
     public void updatePassword(AuthRequest request){
@@ -49,10 +48,10 @@ public class UserService {
 
     public void deleteUser(AuthRequest request){
         User user = getUserByEmail(request.getEmail());
-        if ( user.getPassword().equals( encoder.encode(request.getPassword()) ) ){
-            userRepository.delete(user);
+        if ( !encoder.matches(request.getPassword(), user.getPassword()) ){
+            throw new InvalidPasswordException();
         }
-        throw new InvalidPasswordException();
+        userRepository.delete(user);
     }
 
     public void assignBoard(){}
