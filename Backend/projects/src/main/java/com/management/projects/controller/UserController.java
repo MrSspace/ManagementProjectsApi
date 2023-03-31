@@ -1,10 +1,8 @@
 package com.management.projects.controller;
 
 import com.management.projects.dto.request.AuthRequest;
-import com.management.projects.dto.request.CreateBoardRequest;
-import com.management.projects.dto.request.UpdateNameOfUserRequest;
+import com.management.projects.dto.NameEmail;
 import com.management.projects.dto.response.BoardResponse;
-import com.management.projects.dto.response.UserResponse;
 import com.management.projects.service.BoardService;
 import com.management.projects.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/users-view")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserViewController {
+public class UserController {
 
     private final BoardService boardService;
     private final UserService userService;
@@ -25,13 +25,20 @@ public class UserViewController {
         return ResponseEntity.ok("Hello, Api V1 from users-view uwu");
     }
 
-    @PostMapping("/create-board")
-    public ResponseEntity<BoardResponse> createBoard(@RequestBody CreateBoardRequest request){
+    @GetMapping("/board")
+    public ResponseEntity< List<BoardResponse> > loadBoards(@RequestParam(name = "email") String userEmail){
+        return new ResponseEntity<>(
+                boardService.loadAllBoardsByUser( userService.getUserByEmail(userEmail) ),
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping("/board")
+    public ResponseEntity<BoardResponse> createBoard(@RequestBody NameEmail request){
         return new ResponseEntity<>(boardService.createBoard(request), HttpStatus.CREATED);
     }
 
     @PatchMapping("/update/name")
-    public ResponseEntity<UserResponse> modifyNameOfUser(@RequestBody UpdateNameOfUserRequest request){
+    public ResponseEntity<NameEmail> modifyNameOfUser(@RequestBody NameEmail request){
         return new ResponseEntity<>(userService.updateNameOfUser(request), HttpStatus.OK );
     }
 

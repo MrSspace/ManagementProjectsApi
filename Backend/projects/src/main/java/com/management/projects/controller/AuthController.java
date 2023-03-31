@@ -1,7 +1,7 @@
 package com.management.projects.controller;
 
 import com.management.projects.dto.request.AuthRequest;
-import com.management.projects.dto.response.AuthResponse;
+import com.management.projects.dto.response.SimpleMessageResponse;
 import com.management.projects.dto.request.RegisterRequest;
 import com.management.projects.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ public class AuthController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest user){
+    public ResponseEntity<SimpleMessageResponse> register(@RequestBody RegisterRequest user){
         return new ResponseEntity<>(service.register(user), HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request){
+    public ResponseEntity<SimpleMessageResponse> authenticate(@RequestBody AuthRequest request){
         return ResponseEntity.ok(service.authentication(request));
     }
 

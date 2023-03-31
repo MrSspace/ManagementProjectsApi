@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepository extends MongoRepository<Board, ObjectId> {
 
+    Board findBoardById(ObjectId id);
+
 }

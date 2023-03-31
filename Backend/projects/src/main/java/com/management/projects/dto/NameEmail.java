@@ -1,4 +1,4 @@
-package com.management.projects.dto.request;
+package com.management.projects.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateNameOfUserRequest {
+public class NameEmail {
 
     private String name;
     private String email;
