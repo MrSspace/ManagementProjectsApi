@@ -23,12 +23,10 @@ public class Project {
     private ObjectId id;
     private String name;
     private String description;
-    private LocalDate startDate;
-    private LocalDate endDate;
     @DocumentReference
     private User projectManager;
     @DocumentReference
     private List<User> collaborators;
-    private List<Activity> tasks;
+    private List<Activity> activities;
 
 }

@@ -1,7 +1,5 @@
 package com.management.projects.service;
 
-import com.management.projects.domain.Activity;
-import com.management.projects.domain.Board;
 import com.management.projects.domain.Task;
 import com.management.projects.dto.TaskDTO;
 import com.management.projects.repository.BoardRepository;
@@ -29,10 +27,10 @@ public class TaskService {
         task.setTaskManager(user);
         task.setStartDate(parseStringToDateInYyyyMmDdFormat(request.getStartDate()));
         task.setEndDate(parseStringToDateInYyyyMmDdFormat(request.getEndDate()));
-        List<Task> tasks = activity.getTasks();
-        tasks.add(task);
-        activity.setTasks(tasks);
-        boardRepository.save(board);
+        //List<Task> tasks = activity.getTasks();
+        //tasks.add(task);
+        //activity.setTasks(tasks);
+        //boardRepository.save(board);
     }
 
     public void updateTask(){}

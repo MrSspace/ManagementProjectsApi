@@ -1,4 +1,4 @@
-package com.management.projects.dto.response;
+package com.management.projects.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SimpleMessageResponse {
+public class NameId {
 
-    private String message;
+    private String name;
+    private String id;
 
 }

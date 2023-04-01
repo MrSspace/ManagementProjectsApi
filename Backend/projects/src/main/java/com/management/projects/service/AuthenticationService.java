@@ -1,7 +1,7 @@
 package com.management.projects.service;
 
 import com.management.projects.dto.request.AuthRequest;
-import com.management.projects.dto.response.SimpleMessageResponse;
+import com.management.projects.dto.response.SimpleMessage;
 import com.management.projects.dto.request.RegisterRequest;
 import com.management.projects.exception.InvalidEmailException;
 import com.management.projects.role.Role;
@@ -21,13 +21,13 @@ public class AuthenticationService {
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
 
-    public SimpleMessageResponse register(RegisterRequest request){
+    public SimpleMessage register(RegisterRequest request){
         emailValidation(request.getEmail());
         userService.createUser(request, Role.USER);
         return assignToken( loadUser(request.getEmail()) );
     }
 
-    public SimpleMessageResponse authentication(AuthRequest request){
+    public SimpleMessage authentication(AuthRequest request){
         emailValidation(request.getEmail());
         authManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(), request.getPassword())
@@ -41,9 +41,9 @@ public class AuthenticationService {
         }
     }
 
-    private SimpleMessageResponse assignToken(User user){
+    private SimpleMessage assignToken(User user){
         String jwtToken = jwtService.generateJwtToken(user);
-        return SimpleMessageResponse.builder().message(jwtToken).build();
+        return SimpleMessage.builder().message(jwtToken).build();
     }
 
     private User loadUser(String email){

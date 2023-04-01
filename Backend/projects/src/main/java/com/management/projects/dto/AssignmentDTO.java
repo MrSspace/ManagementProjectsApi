@@ -1,22 +1,22 @@
 package com.management.projects.dto;
 
+import com.management.projects.role.Permission;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDTO {
+@Builder
+public class AssignmentDTO {
 
     private String boardId;
     private String projectId;
     private String activityId;
     private String taskId;
-    private String name;
-    private String description;
-    private NameEmail manager;
-    private String startDate;
-    private String endDate;
+    private String email;
 
 }

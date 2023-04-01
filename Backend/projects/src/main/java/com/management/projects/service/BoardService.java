@@ -2,7 +2,9 @@ package com.management.projects.service;
 
 import com.management.projects.domain.Board;
 import com.management.projects.domain.WorkAssignmentKey;
+import com.management.projects.dto.AssignmentDTO;
 import com.management.projects.dto.NameEmail;
+import com.management.projects.dto.NameId;
 import com.management.projects.dto.response.BoardResponse;
 import com.management.projects.repository.BoardRepository;
 import com.management.projects.repository.UserRepository;
@@ -22,57 +24,70 @@ public class BoardService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final WorkAssignmentKeyService keyService;
+    private final ProjectService projectService;
 
 
     public BoardResponse createBoard(NameEmail request){
         User user = userRepository.findByEmail(request.getEmail());
         Board board = new Board(request.getName(), user);
         boardRepository.insert(board);
-
-        WorkAssignmentKey workKey = new WorkAssignmentKey();
-        workKey.setBoardId(board.getId());
-        workKey.setPermission(Permission.BOARD_OWNER);
-
-        List<WorkAssignmentKey> workAssignments = new ArrayList<>();
-        workAssignments.add(workKey);
-        user.setWorkAssignmentKeys(workAssignments);
+        keyService.boardAssign(board,user,Permission.BOARD_OWNER);
         userRepository.save(user);
-
-        return BoardResponse
-                .builder()
-                .name(board.getName())
-                .owner( user.getName() )
-                .build();
+        return createBoardResponse(board);
     }
 
-    public BoardResponse addProjectToBoard(){
-        return null;
+    public void addCollaboratorToBoard(AssignmentDTO request){
+        User user = userRepository.findByEmail(request.getEmail());
+        Board board = boardRepository.findBoardById(new ObjectId(request.getBoardId()));
+        keyService.boardAssign(board, user, Permission.COLLABORATOR);
+        List<User> collaborators = board.getCollaborators();
+        collaborators.add(user);
+        board.setCollaborators(collaborators);
+        boardRepository.save(board);
     }
 
-    public void removeProjectFromBoard(){}
+    public void removeCollaboratorFromBoard(AssignmentDTO request){
+        User user = userRepository.findByEmail(request.getEmail());
+        Board board = boardRepository.findBoardById(new ObjectId(request.getBoardId()));
+        List<User> currentCollaborators = board.getCollaborators();
 
-    public BoardResponse addCollaboratorToBoard(){
-        return null;
+        List<User> modifiedCollaborators = new ArrayList<>();
+
+        for (User collaborator : currentCollaborators) {
+            if ( !collaborator.getId().equals(user.getId()) ) {
+                modifiedCollaborators.add(collaborator);
+            }
+        }
+
+        board.setCollaborators(modifiedCollaborators);
+        boardRepository.save(board);
     }
-
-    public void removeCollaboratorFromBoard(){}
 
     public BoardResponse loadBoard(ObjectId id){
         Board board = boardRepository.findBoardById(id);
-        return BoardResponse
-                .builder()
-                .name(board.getName())
-                .owner(board.getBoardOwner().getName())
-                //.projects(projectService.loadAllProjectsFromBoard(board))
-                .build();
+        return createBoardResponse(board);
     }
 
-    public void updateBoard(){}
+    public void changeBoardName(NameId request){
+        Board board = boardRepository.findBoardById(new ObjectId(request.getId()));
+        board.setName(request.getName());
+        boardRepository.save(board);
+    }
 
-    public void deleteBoard(){}
+    public void deleteBoard(NameId request){
+        Board board = boardRepository.findBoardById(new ObjectId(request.getId()));
+        boardRepository.delete(board);
+    }
 
-    public List<User> loadAllUsersByBoard(Board board){
-        return null;
+    public List<NameEmail> loadAllCollaboratorsFromBoard(ObjectId boardId){
+        Board board = boardRepository.findBoardById(boardId);
+        List<User> users = board.getCollaborators();
+        List<NameEmail> collaborators = new ArrayList<>();
+        for(User user : users){
+            collaborators.add(new NameEmail(user.getName(), user.getEmail()));
+        }
+        return collaborators;
     }
 
     public List<BoardResponse> loadAllBoardsByUser(User user){
@@ -84,6 +99,20 @@ public class BoardService {
             }
         }
         return boardsIds.stream().map(this::loadBoard).collect(Collectors.toList());
+    }
+
+    private BoardResponse createBoardResponse(Board board){
+        return BoardResponse
+                .builder()
+                .id(board.getId().toString())
+                .name(board.getName())
+                .owner(new NameEmail(
+                        board.getBoardOwner().getName(),
+                        board.getBoardOwner().getEmail())
+                )
+                .projects(projectService.loadAllProjectsFromBoard(board))
+                .collaborators(loadAllCollaboratorsFromBoard(board.getId()))
+                .build();
     }
 
 }

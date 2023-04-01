@@ -1,5 +1,6 @@
 package com.management.projects.dto.response;
 
+import com.management.projects.dto.NameEmail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +14,10 @@ import java.util.List;
 @Builder
 public class BoardResponse {
 
+    private String id;
     private String name;
-    private String owner;
-    private List<Object> projects;
+    private NameEmail owner;
+    private List<ProjectResponse> projects;
+    private List<NameEmail> collaborators;
 
 }
