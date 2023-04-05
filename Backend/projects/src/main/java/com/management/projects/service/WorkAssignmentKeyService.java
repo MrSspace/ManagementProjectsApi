@@ -19,9 +19,9 @@ public class WorkAssignmentKeyService {
     public void boardAssign(Board board, User user, Permission permission){
         workKey.setBoardId(board.getId());
 
-        workKey.setProjectId(null);
-        workKey.setActivityId(null);
-        workKey.setTaskId(null);
+        workKey.setProjectId(0);
+        workKey.setActivityId(0);
+        workKey.setTaskId(0);
 
         workKey.setPermission(permission);
 
@@ -34,8 +34,8 @@ public class WorkAssignmentKeyService {
         workKey.setBoardId(board.getId());
         workKey.setProjectId(project.getId());
 
-        workKey.setActivityId(null);
-        workKey.setTaskId(null);
+        workKey.setActivityId(0);
+        workKey.setTaskId(0);
 
         workKey.setPermission(permission);
 

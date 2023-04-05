@@ -13,7 +13,7 @@ import java.util.List;
 public class Activity {
 
     @Id
-    private ObjectId id;
+    private int id;
     private String name;
     private String description;
     private LocalDate startDate;

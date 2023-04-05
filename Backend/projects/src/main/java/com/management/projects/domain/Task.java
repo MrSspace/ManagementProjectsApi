@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Builder
 public class Task {
     @Id
-    private ObjectId id;
+    private int id;
     private String name;
     private String description;
     private LocalDate startDate;

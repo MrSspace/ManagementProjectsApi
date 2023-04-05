@@ -11,11 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
+
+    private static final int FIRST = 1;
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
@@ -26,15 +29,34 @@ public class ProjectService {
         project.setName(request.getName());
         project.setDescription(request.getDescription());
         project.setProjectManager(userRepository.findByEmail(request.getManager().getEmail()));
-        List<Project> projects = board.getProjects();
-        projects.add(project);
-        board.setProjects(projects);
+        if (board.getProjects() == null) {
+            List<Project> projects = new ArrayList<>();
+            setProject(board, project, projects);
+        } else if (board.getProjects() != null) {
+            List<Project> projects = board.getProjects();
+            setProject(board, project, projects);
+        }
         boardRepository.save(board);
         return createProjectResponse(request.getBoardId(), project);
     }
 
+    private void setProject(Board board, Project project, List<Project> projects){
+        project.setId(FIRST + projects.size());
+        projects.add(project);
+        board.setProjects(projects);
+    }
+
     public List<ProjectResponse> loadAllProjectsFromBoard(Board board) {
-        return null;
+        List<ProjectResponse> projectsResponse = new ArrayList<>();
+        List<Project> projects = boardRepository.findBoardById(board.getId()).getProjects();
+        if (projects == null) {
+            return null;
+        }
+        for(Project project : projects) {
+            ProjectResponse response = createProjectResponse(board.getId().toString(),project);
+            projectsResponse.add(response);
+        }
+        return projectsResponse;
     }
 
 
@@ -42,7 +64,7 @@ public class ProjectService {
         return ProjectResponse
                 .builder()
                 .boardId(boardId)
-                .projectId(project.getId().toString())
+                .projectId(Integer.toString(project.getId()))
                 .name(project.getName())
                 .description(project.getDescription())
                 .manager(new NameEmail(

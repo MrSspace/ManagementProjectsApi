@@ -16,9 +16,9 @@ public class WorkAssignmentKey {
 
     @NotNull
     private ObjectId boardId;
-    private ObjectId projectId;
-    private ObjectId activityId;
-    private ObjectId taskId;
+    private int projectId;
+    private int activityId;
+    private int taskId;
     @NotNull
     private Permission permission;
 

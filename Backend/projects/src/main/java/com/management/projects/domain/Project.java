@@ -20,7 +20,7 @@ import java.util.List;
 public class Project {
 
     @Id
-    private ObjectId id;
+    private int id;
     private String name;
     private String description;
     @DocumentReference

@@ -29,7 +29,7 @@ public class UserController {
     public ResponseEntity< List<BoardResponse> > loadBoards(@RequestParam(name = "email") String userEmail){
         return new ResponseEntity<>(
                 boardService.loadAllBoardsByUser( userService.getUserByEmail(userEmail) ),
-                HttpStatus.CREATED);
+                HttpStatus.OK);
     }
 
     @PostMapping("/board")
