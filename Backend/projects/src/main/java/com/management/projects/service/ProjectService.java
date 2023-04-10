@@ -2,11 +2,14 @@ package com.management.projects.service;
 
 import com.management.projects.domain.Board;
 import com.management.projects.domain.Project;
+import com.management.projects.dto.AssignmentDTO;
 import com.management.projects.dto.NameEmail;
 import com.management.projects.dto.request.ProjectRequest;
 import com.management.projects.dto.response.ProjectResponse;
 import com.management.projects.repository.BoardRepository;
 import com.management.projects.repository.UserRepository;
+import com.management.projects.role.Permission;
+import com.management.projects.user.User;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class ProjectService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final  WorkAssignmentKeyService keyService;
 
     public ProjectResponse createProject(ProjectRequest request){
         Board board = boardRepository.findBoardById(new ObjectId(request.getBoardId()));
@@ -64,12 +68,37 @@ public class ProjectService {
         ObjectId boardId = new ObjectId(ids[0]);
         Integer projectId = Integer.parseInt(ids[1]);
         Board board = boardRepository.findBoardById(boardId);
-        Project project = board.getProjects()
+        Project project = getProject(board, projectId);
+        return createProjectResponse(boardId.toString(), project);
+    }
+
+    private Project getProject(Board board, Integer projectId){
+        return board.getProjects()
                 .stream()
                 .filter(inListProject -> projectId == inListProject.getId())
                 .collect(Collectors.toList())
                 .get(0);
-        return createProjectResponse(boardId.toString(), project);
+    }
+
+    public void addCollaboratorToProject(AssignmentDTO request){
+        User user = userRepository.findByEmail(request.getEmail());
+        Board board = boardRepository.findBoardById(new ObjectId(request.getBoardId()));
+        Integer projectId = Integer.parseInt(request.getProjectId());
+        Project project = getProject(board, projectId);
+
+        keyService.projectAssign(board, project, user, Permission.COLLABORATOR);
+        List<User> collaborators = project.getCollaborators();
+        collaborators.add(user);
+
+        List<Project> projects = board.getProjects();
+        for(Project proj : projects) {
+            if (proj.getId() == projectId){
+                proj.setCollaborators(collaborators);
+            }
+        }
+        board.setProjects(projects);
+
+        boardRepository.save(board);
     }
 
 

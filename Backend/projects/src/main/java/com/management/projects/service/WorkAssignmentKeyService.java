@@ -3,8 +3,10 @@ package com.management.projects.service;
 import com.management.projects.domain.Board;
 import com.management.projects.domain.Project;
 import com.management.projects.domain.WorkAssignmentKey;
+import com.management.projects.repository.UserRepository;
 import com.management.projects.role.Permission;
 import com.management.projects.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
 @Service
 public class WorkAssignmentKeyService {
 
+    @Autowired
+    private UserRepository userRepository;
     private WorkAssignmentKey workKey = new WorkAssignmentKey();
     private List<WorkAssignmentKey> workAssignments = new ArrayList<>();
 
@@ -27,6 +31,8 @@ public class WorkAssignmentKeyService {
 
         workAssignments.add(workKey);
         user.setWorkAssignmentKeys(workAssignments);
+
+        userRepository.save(user);
         workAssignments.clear();
     }
 
@@ -41,6 +47,8 @@ public class WorkAssignmentKeyService {
 
         workAssignments.add(workKey);
         user.setWorkAssignmentKeys(workAssignments);
+
+        userRepository.save(user);
         workAssignments.clear();
     }
 
