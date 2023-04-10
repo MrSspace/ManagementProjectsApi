@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +58,18 @@ public class ProjectService {
             projectsResponse.add(response);
         }
         return projectsResponse;
+    }
+
+    public ProjectResponse loadProject(String ... ids){
+        ObjectId boardId = new ObjectId(ids[0]);
+        Integer projectId = Integer.parseInt(ids[1]);
+        Board board = boardRepository.findBoardById(boardId);
+        Project project = board.getProjects()
+                .stream()
+                .filter(inListProject -> projectId == inListProject.getId())
+                .collect(Collectors.toList())
+                .get(0);
+        return createProjectResponse(boardId.toString(), project);
     }
 
 
