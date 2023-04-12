@@ -18,29 +18,14 @@ public class WorkAssignmentKeyService {
     private WorkAssignmentKey workKey = new WorkAssignmentKey();
     private List<WorkAssignmentKey> workAssignments = new ArrayList<>();
 
-    public void boardAssign(Board board, User user, Permission permission){
+    public void assignKey(Board board, Project project, Activity activity,
+                          Task task, User user, Permission permission){
+
         workKey.setBoardId(board.getId());
 
-        workKey.setProjectId(0);
-        workKey.setActivityId(0);
-        workKey.setTaskId(0);
-
-        workKey.setPermission(permission);
-
-        workAssignments = user.getWorkAssignmentKeys();
-        workAssignments.add(workKey);
-        user.setWorkAssignmentKeys(workAssignments);
-
-        userRepository.save(user);
-        workAssignments.clear();
-    }
-
-    public void projectAssign(Board board, Project project, User user, Permission permission){
-        workKey.setBoardId(board.getId());
-        workKey.setProjectId(project.getId());
-
-        workKey.setActivityId(0);
-        workKey.setTaskId(0);
+        workKey.setProjectId( project == null ? 0 : project.getId() );
+        workKey.setActivityId( activity == null ? 0 : activity.getId() );
+        workKey.setTaskId( task == null ? 0 : task.getId() );
 
         workKey.setPermission(permission);
 

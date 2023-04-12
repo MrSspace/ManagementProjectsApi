@@ -47,7 +47,7 @@ public class ProjectService {
             setProject(board, project, projects);
         }
 
-        keyService.projectAssign(board, project, user, Permission.PROJECT_MANAGER);
+        keyService.assignKey(board, project,null,null, user, Permission.PROJECT_MANAGER);
         boardRepository.save(board);
         return createProjectResponse(request.getBoardId(), project);
     }
@@ -93,7 +93,7 @@ public class ProjectService {
         Integer projectId = Integer.parseInt(request.getProjectId());
         Project project = getProject(board, projectId);
 
-        keyService.projectAssign(board, project, user, Permission.COLLABORATOR);
+        keyService.assignKey(board, project,null,null, user, Permission.COLLABORATOR);
         List<User> collaborators = project.getCollaborators();
         collaborators.add(user);
 

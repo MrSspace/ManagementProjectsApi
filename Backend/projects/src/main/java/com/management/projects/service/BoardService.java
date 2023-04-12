@@ -32,7 +32,7 @@ public class BoardService {
         User user = userRepository.findByEmail(request.getEmail());
         Board board = new Board(request.getName(), user);
         boardRepository.insert(board);
-        keyService.boardAssign(board,user,Permission.BOARD_OWNER);
+        keyService.assignKey(board,null,null,null,user,Permission.BOARD_OWNER);
         userRepository.save(user);
         return createBoardResponse(board);
     }
@@ -40,7 +40,7 @@ public class BoardService {
     public void addCollaboratorToBoard(AssignmentDTO request){
         User user = userRepository.findByEmail(request.getEmail());
         Board board = boardRepository.findBoardById(new ObjectId(request.getBoardId()));
-        keyService.boardAssign(board, user, Permission.COLLABORATOR);
+        keyService.assignKey(board,null,null,null, user, Permission.COLLABORATOR);
         List<User> collaborators = board.getCollaborators();
         collaborators.add(user);
         board.setCollaborators(collaborators);
