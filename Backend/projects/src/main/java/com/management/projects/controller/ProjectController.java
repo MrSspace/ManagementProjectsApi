@@ -28,4 +28,10 @@ public class ProjectController {
         return new ResponseEntity<>("New collaborator added to the project", HttpStatus.CREATED);
     }
 
+    @PatchMapping("/collaborator")
+    public ResponseEntity<String> removeCollaborator(@RequestBody AssignmentDTO request){
+        projectService.removeCollaboratorToProject(request);
+        return new ResponseEntity<>("Collaborator removed from project", HttpStatus.OK);
+    }
+
 }

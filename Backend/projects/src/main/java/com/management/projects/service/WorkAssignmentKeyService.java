@@ -1,8 +1,6 @@
 package com.management.projects.service;
 
-import com.management.projects.domain.Board;
-import com.management.projects.domain.Project;
-import com.management.projects.domain.WorkAssignmentKey;
+import com.management.projects.domain.*;
 import com.management.projects.repository.UserRepository;
 import com.management.projects.role.Permission;
 import com.management.projects.user.User;
@@ -29,6 +27,7 @@ public class WorkAssignmentKeyService {
 
         workKey.setPermission(permission);
 
+        workAssignments = user.getWorkAssignmentKeys();
         workAssignments.add(workKey);
         user.setWorkAssignmentKeys(workAssignments);
 
@@ -45,11 +44,19 @@ public class WorkAssignmentKeyService {
 
         workKey.setPermission(permission);
 
+        workAssignments = user.getWorkAssignmentKeys();
         workAssignments.add(workKey);
         user.setWorkAssignmentKeys(workAssignments);
 
         userRepository.save(user);
         workAssignments.clear();
+    }
+
+    public boolean isTheAssignmentKey(WorkAssignmentKey ... keys){
+        WorkAssignmentKey key1 = keys[0];
+        WorkAssignmentKey key2 = keys[1];
+
+        return key1.equals(key2);
     }
 
 }
