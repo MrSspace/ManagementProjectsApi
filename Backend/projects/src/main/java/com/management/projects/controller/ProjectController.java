@@ -1,6 +1,7 @@
 package com.management.projects.controller;
 
 import com.management.projects.dto.AssignmentDTO;
+import com.management.projects.dto.response.ActivityResponse;
 import com.management.projects.dto.response.ProjectResponse;
 import com.management.projects.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final ActivityService activityService;
 
     @GetMapping
     public ResponseEntity<ProjectResponse> loadProject(
             @RequestParam(name = "boardId") String boardId,
             @RequestParam(name = "projectId") String projectId){
         return new ResponseEntity<>(projectService.loadProject(boardId,projectId), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<ActivityResponse> createActivity(@RequestBody ActivityRequest request){
+        return new ResponseEntity<>(activityService.createActivity, HttpStatus.CREATED);
     }
 
     @PostMapping("/collaborator")
