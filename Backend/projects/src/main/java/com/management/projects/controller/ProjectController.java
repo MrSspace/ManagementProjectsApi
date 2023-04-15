@@ -1,8 +1,10 @@
 package com.management.projects.controller;
 
 import com.management.projects.dto.AssignmentDTO;
+import com.management.projects.dto.request.ActivityRequest;
 import com.management.projects.dto.response.ActivityResponse;
 import com.management.projects.dto.response.ProjectResponse;
+import com.management.projects.service.ActivityService;
 import com.management.projects.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ActivityResponse> createActivity(@RequestBody ActivityRequest request){
-        return new ResponseEntity<>(activityService.createActivity, HttpStatus.CREATED);
+        return new ResponseEntity<>(activityService.createActivity(request), HttpStatus.CREATED);
     }
 
     @PostMapping("/collaborator")
